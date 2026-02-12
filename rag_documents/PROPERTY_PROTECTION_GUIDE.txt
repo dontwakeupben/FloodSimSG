@@ -1,0 +1,212 @@
+PROPERTY PROTECTION GUIDE
+Home and Business Flood Mitigation Strategies
+
+=== Risk Assessment for Properties ===
+
+Determining Your Risk Level:
+- Check PUB's flood map (www.pub.gov.sg/floodmap) by postal code
+- Ground floor and basement units highest risk
+- Properties built before 1990 may lack modern drainage connections
+- Proximity to canals, rivers, or low-lying roads increases risk
+- Construction upstream can alter drainage patterns
+
+Flood-Prone Property Types in Singapore:
+- Basement carparks (Tanglin Mall model)
+- Ground-floor shop houses (Katong, Geylang, Chinatown)
+- Bungalows with sunken courtyards or pools
+- Industrial units in Pioneer, Tuas (ponding areas)
+- Retail units in flood-prone malls (historical Orchard Road properties)
+
+=== Protecting Homes from Floods ===
+
+Structural Modifications:
+- Raise electrical outlets and switches minimum 30cm above floor level
+- Install backflow prevention valves on toilets and drains (prevents sewage backup)
+- Waterproof external walls with sealant (silicone-based for concrete)
+- Raise air-conditioning compressor units above potential flood level
+- Install sump pumps with battery backup in basements
+
+Entry Point Protection:
+- Doorway flood barriers (aluminum or PVC, sandbag alternatives)
+- Waterproof seals for garage doors
+- Raise entrance thresholds by 15cm where possible
+- Install flood skirts around air vents
+
+Landscaping Solutions:
+- Create berms (raised earth barriers) around property perimeter
+- Install permeable pavers instead of concrete for driveways
+- Plant rain gardens to absorb runoff (select flood-tolerant species)
+- Ensure downspouts direct water 2m away from foundation
+
+=== Sandbag Deployment ===
+
+Proper Technique:
+- Fill sandbags 1/2 to 2/3 full (overfilled bags don't seal well)
+- Lay bags like bricks - staggered joints, overlapping seams
+- Tamp down each layer to eliminate gaps
+- Build pyramid-style walls for stability (wider base than height)
+- Place plastic sheeting under sandbag wall for better seal
+
+Strategic Placement:
+- Across doorways (inside and outside for double protection)
+- Around floor drains (to prevent backup)
+- Air conditioning vents (critical for HDB flats)
+- Garage entrances (lowest point of most homes)
+
+Alternatives to Traditional Sandbags:
+- HydraSacks/HydraSnakes: Gel-filled, expand when wet, lightweight when dry
+- Flood gates: Rigid barriers mounted in door frames
+- Inflatable dams: Quick deployment for wide openings
+- Water-filled tubes: Replace sand, easier to store and deploy
+
+Sources in Singapore:
+- PUB provides limited sandbags to flood-prone residents (apply via website)
+- Hardware stores: Home-Fix, Selffix, Giant
+- Online: Lazada, Shopee (search "flood barriers")
+- Construction suppliers for bulk orders
+
+=== Electrical Safety ===
+
+Pre-Flood Preparation:
+- Identify main circuit breaker location (know how to shut off quickly)
+- Move electronics to upper floors or raise on blocks
+- Unplug all non-essential appliances during heavy rain warnings
+- Backup power: Consider portable generators for critical medical equipment (use outdoors only)
+
+During Flooding:
+- Turn off main power if water enters home (do not walk through water to do so)
+- Never touch electrical equipment if wet or standing in water
+- If wires fall into standing water, evacuate immediately
+- Avoid using landline phones during thunderstorms (lightning risk via lines)
+
+Post-Flood Restoration:
+- Have licensed electrician inspect system before restoring power
+- Replace all electrical outlets that were submerged
+- Discard appliances that were underwater (fire hazard)
+- Check for gas leaks if LPG used (pilot lights may extinguish)
+
+=== Insurance Coverage ===
+
+Types of Coverage:
+- Home Contents Insurance: Covers personal belongings (furniture, electronics)
+- Building Insurance: Covers structure (for private property owners)
+- Fire Insurance (HDB): Mandatory but limited coverage, usually excludes flood
+- Comprehensive Home Insurance: Includes flood, theft, accidental damage
+
+Flood-Specific Clauses:
+- Check "Acts of God" or "Natural Disasters" sections
+- Note exclusions for gradual seepage vs. sudden flooding
+- Understand deductible amounts (excess)
+- Confirm coverage for alternative accommodation during repairs
+
+Documentation for Claims:
+- Photograph/video property condition before monsoon season
+- Keep receipts for high-value items (scanned copies in cloud)
+- Document flood damage immediately (date-stamped photos)
+- Obtain police reports for major flooding events
+- Keep records of all mitigation expenses (sandbags, pumps, etc.)
+
+Claim Process:
+1. Notify insurer within 24 hours (most require immediate reporting)
+2. Prevent further damage (mitigation duty)
+3. Inventory damaged items (model numbers, purchase dates)
+4. Obtain repair quotes from approved contractors
+5. Cooperate with loss adjusters inspection
+
+Common Exclusions:
+- Damage from lack of maintenance (blocked drains on property)
+- Unoccupied properties (>30 days empty)
+- Basement contents unless specifically declared
+- Construction materials (if renovating during flood)
+
+=== Business Continuity ===
+
+For Retail/Commercial Tenants:
+- Inventory management: Raise stock 15cm minimum during monsoon
+- Electronic point-of-sale systems: Portable, can move to safety
+- Document storage: Cloud-based, waterproof safes for originals
+- Business interruption insurance: Covers lost income during closure
+
+For Offices:
+- Server rooms: Locate above ground floor, waterproof raised flooring
+- Work-from-home protocols: Activated when flood warnings issued
+- Critical documents: Waterproof fire safes, offsite backups
+- Client communication: Automated systems to notify of closure
+
+Supply Chain Considerations:
+- Identify alternative suppliers outside flood zones
+- 72-hour inventory buffer for critical stock
+- Waterproof packaging for stored goods
+- Delivery route planning avoiding flood-prone roads
+
+=== Emergency Kits for Properties ===
+
+Home Emergency Kit:
+- Portable radio (battery or hand-crank)
+- First aid kit (waterproof container)
+- Torches and extra batteries
+- Important documents (waterproof bag): IC, passports, insurance policies, property deeds
+- Medications (7-day supply)
+- Bottled water (4 liters per person per day)
+- Non-perishable food (3-day supply)
+- Cash (ATMs may be down)
+- Whistle (to signal for help)
+
+Business Emergency Kit:
+- Contact lists (employees, suppliers, customers)
+- Backup drives with critical data
+- Emergency signage (closure notices)
+- Cleaning supplies (mops, buckets, disinfectant)
+- Wet/dry vacuum (shop vac for water removal)
+- Dehumidifiers (prevent mold growth)
+
+=== Recovery and Remediation ===
+
+Immediate Actions (First 24 Hours):
+- Document everything (photos for insurance)
+- Remove water quickly (mold grows within 48 hours)
+- Salvage valuables (prioritize documents, electronics)
+- Contact insurance company
+- Notify landlord if tenant
+
+Drying Out Process:
+- Industrial fans and dehumidifiers (rent from Home-Fix or similar)
+- Remove wet carpets and underlay (usually cannot be saved)
+- Cut drywall 15cm above water line (prevents wicking)
+- Dispose of contaminated insulation
+- Clean all hard surfaces with bleach solution (1:10 ratio)
+
+Mold Prevention:
+- Keep humidity below 60%
+- Run air conditioning continuously initially
+- Inspect behind walls and under floors
+- Professional mold assessment if musty odors persist
+- Health symptoms (respiratory) indicate hidden mold
+
+Long-Term Recovery:
+- Structural assessment by professional engineer
+- Electrical system certification
+- Pest control (flood displaces rodents and insects)
+- Landscape restoration (prevent erosion)
+- Update emergency plans based on lessons learned
+
+=== Contact Numbers ===
+
+Insurance Claims (Major Providers):
+- AIA: 1800-226-0300
+- NTUC Income: 6788-1777
+- Great Eastern: 1800-248-2888
+- Prudential: 1800-333-0333
+- AXA: 1800-880-4888
+
+Government Agencies:
+- PUB (Flooding Issues): 1800-CALL-PUB
+- SCDF (Rescue): 995
+- HDB (Estate Issues): 1800-225-5432
+- BCA (Building Safety): 1800-342-5225
+- Town Councils: Check notice board for local number
+
+Emergency Services:
+- Police: 999
+- Ambulance/Rescue: 995
+- Non-emergency Police: 1800-255-0000

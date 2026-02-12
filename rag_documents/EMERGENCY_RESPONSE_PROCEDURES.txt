@@ -1,0 +1,160 @@
+EMERGENCY RESPONSE PROCEDURES
+SCDF and Agency Coordination During Flood Events
+
+=== Command Structure ===
+
+National Level:
+- Ministry of Home Affairs (MHA) provides overall coordination
+- SCDF (Singapore Civil Defence Force) leads ground response
+- PUB manages drainage and technical flood mitigation
+- NEA monitors weather and issues warnings
+- LTA manages road closures and transport
+
+Local Level:
+- Police Coast Guard (for coastal flooding)
+- Divisional Disaster Management Teams (DMT)
+- Community Emergency Response Teams (CERT)
+- Town Council maintenance crews
+
+=== SCDF Flood Response Protocols ===
+
+Alert Levels:
+
+Level 1 (Monitoring):
+- Trigger: Heavy rain forecast or minor ponding
+- Action: Standby mode, equipment checks
+- Duration: Until all-clear issued
+
+Level 2 (Activation):
+- Trigger: Flash flood warning from PUB or water levels rising
+- Action: Deployment of 2-3 fire appliances to affected areas
+- Equipment: Portable pumps, rescue boats, life jackets
+- Response time: 15 minutes to scene
+
+Level 3 (Full Deployment):
+- Trigger: Confirmed flooding with property damage or rescue needs
+- Action: Battalion-level response, 10+ appliances
+- Additional resources: Disaster assistance and rescue team (DART), marine rescue
+- Coordination: SCDF Operations Centre activated
+
+=== Evacuation Procedures ===
+
+Residential Evacuation:
+1. Warning: Door-to-door alerts by Police and CERT members
+2. Assembly: Residents move to designated assembly areas (usually void decks or shelters)
+3. Transport: SCDF buses or ambulances for mobility-impaired
+4. Shelter: Transfer to official evacuation centers (community centers, schools)
+
+Priority Evacuation Groups:
+- Elderly living alone
+- Ground-floor residents in flood zones
+- Hospital and care facility patients
+- Special needs individuals
+
+Commercial Building Evacuation:
+- Security leads initial evacuation using PA systems
+- Fire wardens check all floors and restrooms
+- Elevators prohibited (risk of entrapment if power fails)
+- Assembly at designated muster points away from building
+
+Transport Evacuation:
+- MRT stations: Staff-guided evacuation via nearest exit, avoid flooded entrances
+- Buses: Drivers assess safety, may request passenger evacuation if water reaches wheel level
+- Vehicles: Abandon only if water reaches door level; climb to roof if trapped
+
+=== Emergency Shelters ===
+
+Designated Evacuation Centers:
+- 50+ Community Centers (CCs) island-wide equipped for 72-hour stays
+- Schools with multi-story buildings (typically HDB neighborhood schools)
+- Community shelters in new HDB developments
+
+Facilities Provided:
+- Sleeping mats and blankets
+- Basic meals (catered or halal-ready-to-eat meals)
+- Medical aid stations
+- Charging stations for phones
+- Sanitary facilities
+
+Registration:
+- Mandatory check-in for accountability
+- Family reunification services
+- Special needs registration for continued support
+
+=== Communication During Disasters ===
+
+Public Alert System:
+- SMS alerts via SGSecure app and PublicWarningSystem
+- Sirens (if widespread disaster) - 30-second tone
+- Radio/TV interruption for emergency broadcasts
+- Social media updates (SCDF Facebook, PUB Twitter/X)
+
+On-Ground Communication:
+- SCDF uses dedicated 4G/5G networks (priority access)
+- Satellite phones for backup in widespread outages
+- WhatsApp groups for community coordinators
+- Police loudhailer patrols in affected neighborhoods
+
+=== Rescue Operations ===
+
+Water Rescue Techniques:
+- Reach: Extend pole or rope from safe position
+- Throw: Life rings or flotation devices
+- Row: Rescue boats for shallow flooding
+- Go: Trained swimmers with safety lines for deep water
+
+Vehicle Submersion Protocol:
+1. Approach from upstream side
+2. Attempt door opening (pressure equalizes as water fills)
+3. If doors stuck, break window (center punch or heavy object)
+4. Extract occupants headfirst maintaining spinal alignment
+5. Provide immediate first aid for hypothermia/water inhalation
+
+Medical Priorities:
+- Drowning/near-drowning: CPR if not breathing
+- Hypothermia: Warm dry blankets, gradual rewarming
+- Trauma from debris: Standard wound management
+- Psychological shock: Calm reassurance, family reunification
+
+=== Recovery Operations ===
+
+Immediate (0-24 hours):
+- Damage assessment by SCDF and PUB engineers
+- Search and clearance of flooded buildings
+- Restoration of critical utilities (power, gas)
+- Debris clearance from roads and drains
+
+Short-term (1-7 days):
+- Continued shelter operations for displaced residents
+- Water quality testing (PUB)
+- Building safety inspections (BCA)
+- Insurance assessment teams
+
+Long-term (1-12 months):
+- Infrastructure repairs
+- Flood prevention improvements
+- Community debriefs and psychological support
+- Review of response protocols
+
+=== Volunteer and Community Support ===
+
+CERT (Community Emergency Response Team):
+- Trained volunteers in HDB estates
+- First aid and basic firefighting capabilities
+- Assist in door-to-door warnings and initial evacuation
+- Coordinate with SCDF upon arrival
+
+PA (People's Association) Integration:
+- Community Centers as coordination hubs
+- Volunteer registration and deployment
+- Distribution of relief supplies
+- Family reunification services
+
+=== Emergency Contact Numbers ===
+
+- Emergency (Fire, Ambulance, Rescue): 995
+- Police: 999
+- Non-emergency Police: 1800-255-0000
+- PUB Flood Duty: 1800-CALL-PUB (1800-2255-782)
+- SP Group (Electricity/Gas): 1800-778-8888
+- Town Council: (varies by constituency, check HDB notice boards)

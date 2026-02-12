@@ -1,0 +1,137 @@
+SINGAPORE WEATHER PATTERNS
+Monsoons, Rainfall, and Flood Risk Correlation
+
+=== Climate Overview ===
+Singapore experiences a tropical rainforest climate (Köppen classification Af) characterized by high humidity (average 84%), consistent temperatures (25-32°C year-round), and abundant rainfall (annual average 2,340mm). The island's position 137km north of the equator results in minimal seasonal temperature variation but distinct wet and dry phases driven by monsoon wind patterns.
+
+=== Monsoon Seasons ===
+
+Northeast Monsoon (December to March):
+- Wet phase: December to January (peak flooding risk)
+- Dry phase: February to March
+- Wind direction: Northeast, carrying moisture from South China Sea
+- Characteristics: Prolonged moderate to heavy rain, lasting 2-3 days
+- Monthly rainfall: 250-350mm in December/January
+- Flood risk: Moderate but sustained (soil saturation leads to flash floods)
+
+Southwest Monsoon (June to September):
+- Generally drier season
+- Wind direction: Southeast/Southwest
+- Characteristics: Short, intense thunderstorms (afternoon/evening)
+- Monthly rainfall: 150-200mm
+- Flood risk: High intensity, localized flash floods (urban heat island effect)
+
+Inter-Monsoon Periods (April-May and October-November):
+- Most unpredictable weather
+- Highest thunderstorm frequency (20-25 days/month)
+- Convergence of wind patterns creates atmospheric instability
+- "Sumatra Squalls" - organized thunderstorms from west
+- Flood risk: Highest for flash floods due to intensity and unpredictability
+
+=== Rainfall Intensity Classifications ===
+
+NEA (National Environment Agency) Classifications:
+- Light: <0.5mm/hour
+- Moderate: 0.5-4mm/hour
+- Heavy: 4-10mm/hour
+- Very Heavy: 10-20mm/hour
+- Torrential: >20mm/hour
+
+Flood Correlation Thresholds:
+- 30mm/hour: Minor ponding in low-lying areas
+- 50mm/hour: Flash flood risk in high-risk zones (Orchard, Bukit Timah)
+- 70mm/hour: Widespread flash flooding likely, road closures
+- 100mm/hour: Major flooding event, emergency response activation
+
+Historical Extremes:
+- December 2006: 366mm in 24 hours (Ulu Pandan)
+- January 1971: 512mm in 24 hours (highest recorded)
+- December 23, 2010: 100.6mm/hour (Tanglin area)
+- April 2023: 80mm in 1 hour (western Singapore)
+
+=== Weather Forecasting ===
+
+NEA Capabilities:
+- Doppler weather radar (C-band) detecting precipitation 250km radius
+- Satellite imagery (Himawari-8) every 10 minutes
+- Automated weather stations (80+ across Singapore)
+- Nowcasting: 1-2 hour predictions with 80% accuracy
+- Short-term: 3-day forecasts updated 4 times daily
+
+Rain Area Information System (RAINS):
+- Real-time rainfall intensity maps
+- 30-minute rainfall accumulation displays
+- Available on NEA website and myENV app
+- Updated every 5 minutes during heavy rain
+
+Limitations:
+- Tropical convection cells develop rapidly (15-30 minutes)
+- Microclimates create localized variations (Orchard vs. Changi can differ significantly)
+- Sea breeze interactions difficult to model precisely
+
+=== Warning Systems ===
+
+Heavy Rain Warning (NEA Issues):
+- Advisory: Expected rainfall 20-40mm/hour
+- Warning: Expected rainfall >40mm/hour
+- Dissemination: Radio, TV, SMS via SGSecure, Apps
+
+Flash Flood Alerts (PUB Issues):
+- Alert: Water level at 80% drain capacity
+- Warning: Water level at 90% capacity or rainfall >50mm/hour sustained
+- Critical: Flooding confirmed, avoid area
+
+Haze and Other Considerations:
+- While not flood-related, haze (August-October) can complicate emergency responses
+- Reduced visibility during heavy rain + haze creates traffic hazards
+
+=== Climate Change Impacts ===
+
+Observed Trends (1980-2024):
+- Annual rainfall increased 15% per decade
+- Maximum hourly rainfall intensity increased 15%
+- Frequency of "extreme" rainfall days (>50mm) doubled
+- Consecutive dry days increasing (drought-flood cycles)
+
+Future Projections (2050):
+- Average temperature rise 1-3°C
+- Rainfall intensity increase 20-30%
+- Sea level rise 0.25-0.5m affecting drainage discharge
+- More erratic monsoon patterns
+
+Adaptation Measures:
+- Drainage infrastructure upgraded to handle 20% more capacity
+- "Sponge city" initiatives increasing permeable surfaces
+- Real-time monitoring expansion
+- Public education on changing risk profiles
+
+=== Seasonal Safety Calendar ===
+
+December-January (High Risk):
+- Year-end monsoon peak
+- Holiday season with higher traffic volumes
+- Tourists unfamiliar with local weather risks
+- Precaution: Check weather before basement parking
+
+April-May (Thunderstorm Peak):
+- Afternoon storms during school hours
+- Flash flood risk during evening commute
+- Precaution: Carry umbrella, avoid outdoor activities 3-6pm
+
+June-July (Dry but Intense):
+- Short intense storms
+- Dry soil leads to rapid runoff
+- Precaution: Monitor sudden weather changes
+
+October-November (Second Inter-Monsoon):
+- Unpredictable patterns
+- Sumatra squalls (early morning)
+- Precaution: Morning commuters beware of sudden storms
+
+=== Useful Resources ===
+
+- NEA Weather: www.nea.gov.sg/weather
+- myENV app (iOS/Android): Real-time weather and air quality
+- PUB MyWaters: Flood monitoring
+- Radio: 938NOW, CNA (breaking weather alerts)
+- Hotline: 6542-7728 (NEA general enquiries)

@@ -1,0 +1,89 @@
+FLOOD RISK BY AREA
+Singapore Flood-Prone Locations and Risk Assessment
+
+=== Methodology ===
+PUB classifies flood risk using a combination of:
+- Historical flood incidence data (post-2000)
+- Terrain elevation analysis (LiDAR mapping)
+- Drainage capacity modeling
+- Land use changes and urban development
+- Climate change projections (increasing rainfall intensity)
+
+Risk categories:
+- High Risk: Flooded multiple times in past decade, significant property damage potential
+- Medium Risk: Occasional flash floods, mainly road-level inundation
+- Low Risk: Rare flooding, quick dissipation, minor inconvenience
+
+=== High-Risk Zones ===
+
+Orchard Road Area:
+- Tanglin Mall/Tanglin Carpark (Basement level, flooded 2010/2011)
+- Orchard Road intersections with Scotts Road/Paterson Road
+- Liat Towers basement (flooded 2010)
+- Far East Shopping Centre vicinity
+Risk factors: Low-lying topography, intense commercial development, limited drainage capacity in older sections
+
+Bukit Timah Area:
+- Bukit Timah Road (between Sixth Avenue and Woodcut Road)
+- Clementi Road near Ngee Ann Polytechnic
+- Dunearn Road underpasses
+Risk factors: Natural valley topography, upstream catchment from Central Catchment Nature Reserve
+
+Northern Areas:
+- Admiralty Road West (industrial estates)
+- Woodlands Avenue 12
+- Yishun Avenue 5/Ring Road
+Risk factors: Older drainage infrastructure, industrial runoff, flat terrain
+
+Eastern Industrial:
+- Paya Lebar Road/Airport Road
+- Tampines Avenue 10 industrial area
+- Changi Business Park (low-lying sections)
+Risk factors: High runoff from concrete surfaces, tidal influences
+
+=== Medium-Risk Zones ===
+
+Central Business District:
+- Robinson Road (occasional flash floods)
+- Shenton Way basements
+- Cecil Street
+Risk factors: Dense development, but modern drainage infrastructure
+
+Western Regions:
+- Jurong West Avenue 1
+- Pioneer Road junctions
+- Tuas industrial areas (increasing risk with development)
+Risk factors: Reclaimed land, ongoing construction, sediment runoff
+
+=== Game-Specific Locations Profile ===
+
+ION Orchard (Low Risk):
+- Elevation: 18m above sea level
+- Flood risk: Minimal due to high elevation
+- Vulnerability: Underground MRT connection (ION Station) subject to standard MRT protocols
+- Historical data: No flooding incidents since opening in 2009
+
+Orchard Road (High Risk):
+- Elevation: 10-12m varying along stretch
+- Flood risk: Flash flooding during intense thunderstorms (>50mm/hour)
+- Vulnerable points: Intersections, basement carparks, underground pedestrian crossings
+- Historical data: Major floods 2010, 2011, 2017, 2023
+
+Tanglin Carpark (Critical Risk):
+- Elevation: 8m (basement level effectively 3-4m below road)
+- Flood risk: Severe basement flooding within 30 minutes of heavy rain
+- Historical data: Completely submerged December 2010 and January 2011
+- Current status: Improved drainage pumps installed, but remains high-risk
+
+=== Warning Thresholds ===
+PUB issues flood warnings when:
+- Water level reaches 90% of drain capacity
+- Rainfall exceeds 50mm/hour in high-risk zones
+- Tide levels coincide with heavy rain (compound flooding risk)
+
+=== Real-Time Monitoring ===
+Access current flood status:
+- PUB MyWaters app (iOS/Android)
+- Public Utilities Board website flood map
+- LTA OneMotoring road closure updates
+- Radio broadcast during severe weather

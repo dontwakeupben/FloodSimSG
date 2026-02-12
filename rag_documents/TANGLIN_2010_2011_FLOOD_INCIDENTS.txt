@@ -1,0 +1,90 @@
+TANGLIN 2010-2011 FLOOD INCIDENTS
+Case Study of Singapore's Worst Recent Urban Flooding
+
+=== December 23, 2010 Incident ===
+
+Timeline:
+- 10:30 AM: Heavy rain begins over central Singapore
+- 11:15 AM: Rainfall intensity peaks at 100.6mm/hour (highest in 30 years for the area)
+- 11:30 AM: Water overflows from Stamford Canal
+- 11:45 AM: Tanglin Mall basement carpark begins flooding
+- 12:00 PM: Liat Towers basement completely submerged (3m depth)
+- 12:15 PM: Tanglin Carpark reaches full inundation (50+ vehicles submerged)
+- 1:00 PM: Rain subsides, pumping operations begin
+- 6:00 PM: Water levels recede sufficiently for damage assessment
+
+Immediate Impact:
+- Tanglin Mall: 150 vehicles damaged/destroyed in B2 and B3 carpark levels
+- Liat Towers: 30+ luxury vehicles destroyed, ground floor shops flooded
+- Orchard Road: Traffic paralysis for 6 hours
+- Estimated damage: $5-7 million (vehicles and property)
+
+=== January 30, 2011 Incident ===
+
+Timeline:
+- 2:15 PM: Intense thunderstorm develops
+- 2:45 PM: Rainfall reaches 80mm/hour
+- 3:00 PM: Tanglin Carpark floods again (repeat incident)
+- 3:15 PM: Water enters Tanglin Mall basement retail level
+- 3:30 PM: Scotts Road/Orchard Road intersection impassable
+- 4:00 PM: MRT station preventive closure (Orchard Station)
+
+Impact:
+- Tanglin Mall: Second flooding in 5 weeks, 80+ additional vehicles affected
+- Public confidence: Sharp decline in basement parking usage in area
+- Insurance claims: Surge in comprehensive auto claims, industry losses >$10 million total
+
+=== Root Cause Analysis ===
+Technical Factors:
+- Stamford Canal capacity exceeded (designed for 50-year storm, exceeded by 100-year equivalent)
+- Rapid development upstream (Ion Orchard construction) increased runoff velocity
+- Aging trash trap at canal intake clogged with debris
+- Basement carparks below canal overflow level (design flaw)
+
+Operational Factors:
+- Warning system insufficient lead time (15 minutes vs. 30 needed for evacuation)
+- No automated barriers at carpark entrances
+- Insufficient coordination between PUB and mall management
+- Public complacency despite earlier warnings
+
+=== Response and Recovery ===
+
+Immediate Actions (2011):
+- Installation of temporary flood barriers at Tanglin Mall
+- Enhanced pumping capacity (mobile pumps stationed during monsoon)
+- 24/7 monitoring of Stamford Canal water levels
+- Road closure protocols for Orchard Road when canal reaches 80% capacity
+
+Long-term Improvements (2011-2015):
+- Stamford Detention Tank constructed (2014) - 15 million liter capacity underground storage
+- Canal widening and deepening along Tanglin Road stretch
+- Mandatory flood barriers for all new basement developments in zone
+- Improved trash traps with automated monitoring
+
+Compensation and Support:
+- PUB ex-gratia payments for uninsured vehicle losses (partial coverage)
+- Business interruption support for affected retailers
+- Free vehicle towing and assessment services
+- Public apology from Minister for Environment and Water Resources
+
+=== Lessons Learned ===
+
+Engineering Standards:
+- Basement carparks now required to be 1.2m above 100-year flood levels OR have approved flood mitigation systems
+- All new developments in flood zones must conduct flood impact assessments
+- Improved integration of blue-green infrastructure
+
+Public Communication:
+- MyWaters app launched (2011) providing real-time flood alerts
+- Standardized flood risk signage at carpark entrances
+- Regular flood drills in commercial districts
+- Enhanced public education on "Don't drive into flooded areas"
+
+System Resilience:
+- Redundant pumping systems installed
+- Faster deployment of mobile flood barriers (target: 10 minutes)
+- Improved weather radar integration (nowcasting accuracy to 15 minutes)
+- Coordination protocols between PUB, SCDF, and mall security
+
+=== Current Status (2024) ===
+Tanglin area has not experienced major flooding since 2011 infrastructure upgrades. However, Tanglin Carpark remains a high-risk location in PUB's database, with permanent flood barriers installed and automatic pump systems. The area serves as the primary case study for Singapore's flood resilience improvements.

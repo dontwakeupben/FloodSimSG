@@ -1,0 +1,23 @@
+# Core game dependencies
+pygame>=2.5.0
+
+# AI/LLM dependencies
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-chroma>=0.0.5
+langchain-community>=0.0.10
+
+# Azure OpenAI
+openai>=1.0.0
+
+# Vector database for RAG
+chromadb>=0.4.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Document processing (for RAG)
+pypdf>=3.0.0
+
+# Async support
+aiohttp>=3.9.0

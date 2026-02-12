@@ -1,0 +1,67 @@
+SINGAPORE PUBLIC TRANSPORT FLOOD ADVISORIES
+MRT and Bus Operations During Flooding Events
+
+=== MRT Flood Resilience ===
+Singapore's Mass Rapid Transit (MRT) system is designed with multiple flood protection measures due to its extensive underground network. Station entrances are elevated minimum 1.2m above ground level, with additional flood barriers (demountable or automatic) deployed during heavy rain warnings.
+
+Critical flood prevention infrastructure includes:
+- Raised station entrances and ventilation shafts
+- Automatic flood barrier systems at 23 vulnerable stations
+- Water-tight doors and seals for underground facilities
+- 24/7 Operations Control Centre monitoring weather alerts
+- Portable flood barriers stored at all underground stations
+
+=== Station Closure Protocols ===
+When water levels threaten station safety:
+1. Alert Stage: Water detected near entrance - monitoring intensified
+2. Warning Stage: Water approaching critical level - barriers deployed
+3. Closure Stage: Water entering station - immediate evacuation and closure
+
+Recent closures due to flooding:
+- 2023: Bencoolen Station (flash flood at entrance)
+- 2021: Clarke Quay area stations (preventive measures)
+- 2010: Orchard Station (Tanglin flooding impact)
+
+=== Bus Operations During Floods ===
+Bus services are the most affected during flash floods. SBS Transit and SMRT Bus coordinate closely with LTA and PUB:
+
+Bus Disruption Procedures:
+- Real-time diversion based on PUB flood alerts
+- Bus Captain authority to divert when safety is compromised
+- Alternative routes pre-planned for 50+ flood-prone road segments
+- Service updates via Bus Stop displays, apps, and social media
+
+High-risk bus routes:
+- Services using Orchard Road, Bukit Timah Road, and Thomson Road
+- Routes passing through low-lying areas like Bukit Panjang, Admiralty
+- Industrial estate services in Pioneer and Tuas (ponding prone)
+
+=== Alternative Transport Options ===
+When primary modes fail:
+- Free bridging bus services between affected MRT stations
+- Activated within 15 minutes of service disruption
+- Pickup points clearly marked at alternative stations
+- Integration with Grab, Gojek, and TADA for surge monitoring
+
+=== Communication Protocols ===
+Public notification hierarchy:
+1. MyTransport.sg app push notifications
+2. Station announcements (English, Mandarin, Malay, Tamil)
+3. Social media (Twitter/X @SBSTransit and @SMRT_Singapore)
+4. News radio (93.8FM, 95.8FM, 89.7FM)
+5. Electronic signboards at bus stops and stations
+
+=== Safety Guidelines for Commuters ===
+During heavy rain/flood warnings:
+- Avoid underground passages if water is visible at entrances
+- Do not attempt to wade through flooded bus stops (risk of open manholes)
+- Check PUB's MyWaters app before traveling
+- Allow extra 30-45 minutes for journeys during monsoon periods
+- Follow staff instructions; do not force open train doors
+
+=== Emergency Contacts ===
+- MRT Emergency: Press emergency button in trains/stations
+- SMRT Hotline: 1800-336-8900
+- SBS Transit: 1800-287-2727
+- LTA OneMotoring: 1800-2255-582
+- PUB Flood Alert: 1800-CALL-PUB

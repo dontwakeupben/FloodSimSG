@@ -1,0 +1,47 @@
+PUB FLOOD MANAGEMENT GUIDELINES
+Singapore's National Water Agency
+
+=== Overview ===
+PUB (Public Utilities Board) is Singapore's national water agency responsible for managing the country's water supply, drainage, and sewerage systems. Since 2001, PUB has been the lead agency for flood management, implementing a comprehensive, multi-pronged approach to minimize flood risks in the tropical, urbanized environment of Singapore.
+
+=== Drainage Infrastructure ===
+Singapore's drainage system comprises over 8,000 kilometers of drains and canals, including major waterways like the Singapore River, Kallang River, and Rochor Canal. The system is designed to handle intense rainfall typical of tropical thunderstorms, with drains sized to accommodate runoff from upstream catchments.
+
+Key infrastructure includes:
+- 32 major rivers and canals
+- Over 5,000km of public drains
+- 17 reservoir schemes integrated with flood control
+- Underground stormwater storage tanks (e.g., Stamford Detention Tank)
+- Smart drainage systems with real-time monitoring
+
+=== Flood Prevention Strategy ===
+PUB employs a "Source-Pathway-Receptor" approach:
+- Source: Minimize runoff through porous pavement, green roofs, and rainwater harvesting
+- Pathway: Ensure drains and canals have adequate capacity and are free from obstructions
+- Receptor: Protect properties through platform levels, flood barriers, and public education
+
+The Code of Practice on Surface Water Drainage mandates that all developments provide on-site detention tanks to slow down stormwater discharge into public drains, reducing peak flows during heavy rain.
+
+=== Maintenance Schedules ===
+PUB conducts rigorous maintenance year-round:
+- Daily inspection of flood-prone areas during monsoon seasons
+- Weekly cleaning of critical drains and trash traps
+- Quarterly desilting of major canals
+- Annual comprehensive drainage system audits
+- Pre-monsoon inspections (March and September)
+
+The Quick Response Teams (QRTs) are activated during heavy rain to monitor hotspots and clear blockages within 30 minutes of detection.
+
+=== Monitoring and Technology ===
+PUB operates a comprehensive flood monitoring network:
+- 250+ water level sensors across Singapore
+- 130+ CCTVs monitoring critical drainage points
+- Real-time data transmission to PUB Operations Centre
+- MyWaters mobile app for public flood alerts
+- Integration with NEA's weather radar systems
+
+=== Contact Information ===
+- 24-hour Flood Duty Officer: 1800-CALL-PUB (1800-2255-782)
+- Emergency (Police/Fire): 999
+- SCDF: 995
+- PUB Website: www.pub.gov.sg
