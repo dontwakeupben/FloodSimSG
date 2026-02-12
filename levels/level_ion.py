@@ -1,7 +1,7 @@
 """ION Orchard Mall level - High ground, safe zone."""
 import pygame
-from level_base import BaseLevel
-from entities import ArrowTransition, ClickableObject
+from .level_base import BaseLevel
+from core import ArrowTransition, ClickableObject
 
 
 class IonLevel(BaseLevel):

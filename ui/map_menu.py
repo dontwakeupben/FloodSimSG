@@ -8,7 +8,7 @@ Uses an 8x8 pixel grid for authentic retro pixel art aesthetic.
 import pygame
 import math
 from typing import List, Callable, Optional, Tuple
-from entities import RainEffect
+from core import RainEffect
 
 
 class PixelGrid:

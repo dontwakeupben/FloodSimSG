@@ -1,7 +1,7 @@
 """Tanglin Carpark level - Basement, extreme danger zone."""
 import pygame
-from level_base import BaseLevel
-from entities import ArrowTransition, ClickableObject
+from .level_base import BaseLevel
+from core import ArrowTransition, ClickableObject
 
 
 class CarparkLevel(BaseLevel):

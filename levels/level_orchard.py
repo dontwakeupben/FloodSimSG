@@ -1,7 +1,7 @@
 """Orchard Road level - Street level, flash flood zone."""
 import pygame
-from level_base import BaseLevel
-from entities import ArrowTransition, ClickableObject
+from .level_base import BaseLevel
+from core import ArrowTransition, ClickableObject
 
 
 class OrchardLevel(BaseLevel):

@@ -4,7 +4,7 @@ import math
 from typing import List, Callable, Optional
 from datetime import datetime
 
-from ai_chatbot import FloodChatbot, ChatMessage
+from .ai_chatbot import FloodChatbot, ChatMessage
 
 
 class ChatButton:

@@ -22,16 +22,10 @@ load_dotenv()
 # Ensure we're in the correct directory for imports and assets
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-from level_base import BaseLevel
-from level_ion import IonLevel
-from level_orchard import OrchardLevel
-from level_carpark import CarparkLevel
-from entities import RainEffect, WaterRiseEffect
-from ai_advisor import AIAdvisor
-from ai_chatbot import FloodChatbot
-from ai_chatbot_ui import ChatbotPanel, ChatButton
-from ui import UIPanel, FadeTransition, CollapsibleRainfallPanel, BackButton, InfoPopup
-from map_menu import MapMenu
+from levels import BaseLevel, IonLevel, OrchardLevel, CarparkLevel
+from core import RainEffect, WaterRiseEffect
+from ai import AIAdvisor, FloodChatbot, ChatbotPanel, ChatButton
+from ui import UIPanel, FadeTransition, CollapsibleRainfallPanel, BackButton, InfoPopup, MapMenu
 
 # Game constants
 SCREEN_WIDTH = 800
