@@ -24,6 +24,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 from levels import BaseLevel, IonLevel, OrchardLevel, CarparkLevel
 from core import RainEffect, WaterRiseEffect
+from core.rainfall_api import RainfallAPIClient, get_rainfall_for_zone
 from ai import (
     AIAdvisor, FloodChatbot, ChatbotPanel, ChatButton,
     ProactiveAlertManager, AudioNarrator
@@ -82,6 +83,15 @@ class Game:
         
         # Initialize collapsible rainfall panel (to the right of back button)
         self.rainfall_panel = CollapsibleRainfallPanel(72, 20)
+        self.rainfall_panel.set_live_checkbox_callback(self._on_live_checkbox_toggled)
+        
+        # Initialize rainfall API client for live data
+        self.rainfall_api = RainfallAPIClient()
+        self.use_live_rainfall = False  # Toggle for live vs manual
+        self.live_rainfall_value = 0.0
+        self.rainfall_api_error = None
+        self.last_rainfall_update = 0.0
+        self.rainfall_update_interval = 60.0  # Update every 60 seconds
         
         # Initialize UI panel (bottom for advice)
         self.ui_panel = UIPanel(0, GAME_AREA_HEIGHT, SCREEN_WIDTH, UI_HEIGHT)
@@ -176,6 +186,98 @@ class Game:
             
         self.fade.start_fade_out(do_return)
         
+    def toggle_live_rainfall(self) -> bool:
+        """Toggle between live rainfall data and manual slider.
+        
+        Returns:
+            True if live data is now enabled, False otherwise
+        """
+        self.use_live_rainfall = not self.use_live_rainfall
+        
+        if self.use_live_rainfall:
+            # Try to fetch initial data
+            self._update_live_rainfall()
+            print(f"[RAINFALL] Live data enabled: {self.live_rainfall_value:.1f}mm")
+        else:
+            print("[RAINFALL] Manual mode enabled")
+        
+        # Update panel to reflect mode change
+        self.rainfall_panel.set_live_mode(self.use_live_rainfall)
+        
+        return self.use_live_rainfall
+    
+    def _on_live_checkbox_toggled(self, enabled: bool) -> None:
+        """Handle when the live data checkbox is toggled in the UI.
+        
+        Args:
+            enabled: True if live mode was enabled via checkbox
+        """
+        self.use_live_rainfall = enabled
+        
+        if enabled:
+            # Try to fetch initial data
+            self._update_live_rainfall()
+            print(f"[RAINFALL] Live data enabled via checkbox: {self.live_rainfall_value:.1f}mm")
+        else:
+            # Clear live stats when disabling
+            self.rainfall_panel.set_live_stats(
+                rainfall=self.rainfall,
+                station_info="",
+                last_updated="",
+                error=None
+            )
+            print("[RAINFALL] Manual mode enabled via checkbox")
+    
+    def _update_live_rainfall(self) -> None:
+        """Fetch and update rainfall from live API."""
+        from datetime import datetime
+        
+        # Determine which zone we're in to get appropriate station data
+        zone_map = {
+            "ion": "ion_orchard",
+            "orchard": "orchard_road",
+            "carpark": "tanglin_carpark"
+        }
+        
+        zone = zone_map.get(self.current_level_name, "ion_orchard")
+        
+        # Fetch rainfall for current zone
+        rainfall = get_rainfall_for_zone(self.rainfall_api, zone)
+        
+        if rainfall is not None:
+            self.live_rainfall_value = rainfall
+            self.rainfall_api_error = None
+            # Update global rainfall if in live mode
+            if self.use_live_rainfall:
+                self.rainfall = self.live_rainfall_value
+                self.rainfall_panel.set_rainfall(self.rainfall)
+            
+            # Update live stats display
+            station_names = {
+                "ion_orchard": "Somerset Rd / Scotts Rd",
+                "orchard_road": "Somerset Rd / Scotts Rd",
+                "tanglin_carpark": "Holland Rd / Henderson Rd"
+            }
+            station_info = f"Stations: {station_names.get(zone, 'Unknown')}"
+            last_updated = datetime.now().strftime("%H:%M:%S")
+            self.rainfall_panel.set_live_stats(
+                rainfall=self.live_rainfall_value,
+                station_info=station_info,
+                last_updated=last_updated,
+                error=None
+            )
+        else:
+            self.rainfall_api_error = self.rainfall_api.get_last_error()
+            if self.rainfall_api_error:
+                print(f"[RAINFALL] API Error: {self.rainfall_api_error}")
+            # Show error in live stats
+            self.rainfall_panel.set_live_stats(
+                rainfall=0.0,
+                station_info="",
+                last_updated="",
+                error=self.rainfall_api_error or "Failed to fetch data"
+            )
+    
     def _on_proactive_alert(self, alert) -> None:
         """Handle proactive alerts from the alert manager.
         
@@ -227,14 +329,6 @@ class Game:
                         self.running = False
                 elif event.key == pygame.K_F1:
                     self.debug_mode = not self.debug_mode
-                elif event.key == pygame.K_t:
-                    # Test audio narrator
-                    print("Testing audio narrator...")
-                    self.audio_narrator.speak(
-                        "This is a test of the flood simulation audio system.",
-                        priority=1,
-                        alert_id="test"
-                    )
             
             # Handle chatbot panel events (highest priority when visible)
             # Handle chatbot panel events only in level mode
@@ -291,6 +385,20 @@ class Game:
         # Update fade transition
         if self.fade.update():
             return  # Don't update game during fade
+        
+        # Update live rainfall data if enabled
+        if self.use_live_rainfall and self.game_state == "level":
+            self.last_rainfall_update += dt
+            if self.last_rainfall_update >= self.rainfall_update_interval:
+                self._update_live_rainfall()
+                self.last_rainfall_update = 0.0
+        
+        # When switching levels, refresh live rainfall for new zone
+        if self.use_live_rainfall and self.game_state == "level":
+            # Check if we need to refresh when level changes
+            if hasattr(self, '_last_level_name') and self._last_level_name != self.current_level_name:
+                self._update_live_rainfall()
+            self._last_level_name = self.current_level_name
         
         if self.game_state == "map_menu":
             # Update map menu animations

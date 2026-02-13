@@ -6,7 +6,7 @@ from typing import Callable, Optional
 class Slider:
     """Interactive slider for controlling rainfall (0-150mm)."""
     
-    def __init__(self, x: int, y: int, width: int, height: int, 
+    def __init__(self, x: int, y: int, width: int, height: int,
                  min_val: float = 0, max_val: float = 150):
         """Initialize slider.
         
@@ -21,6 +21,17 @@ class Slider:
         self.value = min_val
         self.dragging = False
         self.handle_radius = height // 2 + 5
+        self.disabled = False
+        
+    def set_disabled(self, disabled: bool) -> None:
+        """Set whether the slider is disabled (greyed out, unmovable).
+        
+        Args:
+            disabled: True to disable the slider, False to enable
+        """
+        self.disabled = disabled
+        if disabled:
+            self.dragging = False
         
     def handle_event(self, event: pygame.event.Event) -> bool:
         """Process mouse events for slider interaction.
@@ -31,6 +42,10 @@ class Slider:
         Returns:
             True if value changed
         """
+        # Ignore all events if disabled
+        if self.disabled:
+            return False
+            
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.dragging = True
@@ -56,20 +71,40 @@ class Slider:
         Args:
             screen: The pygame surface to draw on
         """
-        # Pixelated track background (no border_radius for sharp edges)
-        pygame.draw.rect(screen, (180, 180, 180), self.rect)
-        pygame.draw.rect(screen, (120, 120, 120), self.rect, 2)
+        # Choose colors based on disabled state
+        if self.disabled:
+            track_bg = (160, 160, 160)  # Darker grey track
+            track_border = (100, 100, 100)  # Grey border
+            fill_color = (140, 140, 140)  # Grey fill
+            fill_border = (100, 100, 100)  # Grey fill border
+            handle_base = (120, 120, 120)  # Grey handle
+            handle_highlight = (160, 160, 160)  # Light grey highlight
+            handle_shadow = (80, 80, 80)  # Dark grey shadow
+            handle_border = (60, 60, 60)  # Dark grey border
+        else:
+            track_bg = (180, 180, 180)
+            track_border = (120, 120, 120)
+            fill_color = (80, 130, 200)
+            fill_border = (40, 90, 160)
+            handle_base = (60, 110, 180)
+            handle_highlight = (100, 150, 220)
+            handle_shadow = (30, 70, 130)
+            handle_border = (30, 60, 120)
         
-        # Draw filled portion (pixelated blue gradient effect)
+        # Pixelated track background (no border_radius for sharp edges)
+        pygame.draw.rect(screen, track_bg, self.rect)
+        pygame.draw.rect(screen, track_border, self.rect, 2)
+        
+        # Draw filled portion (pixelated gradient effect)
         fill_width = int((self.value / self.max_val) * self.rect.width)
         fill_rect = pygame.Rect(self.rect.x, self.rect.y, fill_width, self.rect.height)
         
         # Create pixelated fill pattern
         for x in range(fill_rect.x, fill_rect.x + fill_width, 4):
-            pygame.draw.rect(screen, (80, 130, 200), (x, fill_rect.y, 4, fill_rect.height))
-        # Draw darker blue border on fill
+            pygame.draw.rect(screen, fill_color, (x, fill_rect.y, 4, fill_rect.height))
+        # Draw darker border on fill
         if fill_width > 0:
-            pygame.draw.rect(screen, (40, 90, 160), fill_rect, 2)
+            pygame.draw.rect(screen, fill_border, fill_rect, 2)
         
         # Draw pixelated square handle instead of circle
         handle_x = self.rect.x + int((self.value / self.max_val) * self.rect.width)
@@ -82,10 +117,10 @@ class Slider:
             handle_size * 2
         )
         # Draw pixelated handle with 3D bevel effect
-        pygame.draw.rect(screen, (60, 110, 180), handle_rect)  # Base
-        pygame.draw.rect(screen, (100, 150, 220), (handle_rect.x, handle_rect.y, handle_rect.width, 3))  # Top highlight
-        pygame.draw.rect(screen, (30, 70, 130), (handle_rect.x, handle_rect.bottom - 3, handle_rect.width, 3))  # Bottom shadow
-        pygame.draw.rect(screen, (30, 60, 120), handle_rect, 2)  # Border
+        pygame.draw.rect(screen, handle_base, handle_rect)  # Base
+        pygame.draw.rect(screen, handle_highlight, (handle_rect.x, handle_rect.y, handle_rect.width, 3))  # Top highlight
+        pygame.draw.rect(screen, handle_shadow, (handle_rect.x, handle_rect.bottom - 3, handle_rect.width, 3))  # Bottom shadow
+        pygame.draw.rect(screen, handle_border, handle_rect, 2)  # Border
         
         # Draw small dots on handle for grip
         pygame.draw.rect(screen, (200, 200, 200), (handle_x - 2, handle_y - 4, 4, 2))
@@ -115,15 +150,15 @@ class CollapsibleRainfallPanel:
         
         # Panel dimensions (when expanded)
         self.panel_width = 220
-        self.panel_height = 130
+        self.panel_height = 150  # Increased height for live indicator
         self.panel_rect = pygame.Rect(x, y + self.toggle_size + 8, self.panel_width, self.panel_height)
         
-        # Create slider inside the panel
-        slider_margin = 15
+        # Create slider inside the panel (positioned below checkbox)
+        slider_margin = 25
         slider_width = self.panel_width - slider_margin * 2
         slider_height = 16
         slider_x = self.panel_rect.x + slider_margin
-        slider_y = self.panel_rect.y + 50
+        slider_y = self.panel_rect.y + 55  # Moved down to make room for checkbox
         self.rainfall_slider = Slider(slider_x, slider_y, slider_width, slider_height, 0, 150)
         
         # Fonts
@@ -144,6 +179,28 @@ class CollapsibleRainfallPanel:
             self.close_btn_size
         )
         
+        # Live data mode
+        self.live_mode = False
+        self.live_indicator_time = 0.0
+        
+        # Checkbox for live data toggle (positioned at bottom of panel)
+        # Position will be calculated dynamically in _draw_live_checkbox
+        self.checkbox_rect = pygame.Rect(
+            self.panel_rect.x + 15,
+            0,  # Will be set dynamically
+            14,
+            14
+        )
+        self.checkbox_checked = False
+        self.checkbox_hovered = False
+        self.live_checkbox_callback: Optional[Callable[[bool], None]] = None
+        
+        # Live data stats
+        self.live_rainfall_value = 0.0
+        self.live_station_info = ""
+        self.live_last_updated = ""
+        self.live_api_error = None
+        
     def handle_event(self, event: pygame.event.Event) -> bool:
         """Process events for the panel.
         
@@ -158,6 +215,7 @@ class CollapsibleRainfallPanel:
         # Update hover states
         self.toggle_hovered = self.toggle_rect.collidepoint(mouse_pos)
         self.close_hovered = self.close_btn_rect.collidepoint(mouse_pos) if self.expanded else False
+        self.checkbox_hovered = self.checkbox_rect.collidepoint(mouse_pos) if self.expanded else False
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Check toggle button click
@@ -168,6 +226,17 @@ class CollapsibleRainfallPanel:
             # Check close button click (only when expanded)
             if self.expanded and self.close_btn_rect.collidepoint(event.pos):
                 self.expanded = False
+                return True
+            
+            # Check checkbox click (only when expanded)
+            if self.expanded and self.checkbox_rect.collidepoint(event.pos):
+                self.checkbox_checked = not self.checkbox_checked
+                self.live_mode = self.checkbox_checked
+                # Update slider disabled state based on live mode
+                self.rainfall_slider.set_disabled(self.live_mode)
+                # Notify callback
+                if self.live_checkbox_callback:
+                    self.live_checkbox_callback(self.live_mode)
                 return True
             
             # If expanded and clicking outside panel (but not on toggle), close
@@ -259,6 +328,13 @@ class CollapsibleRainfallPanel:
         """Draw the expanded panel with slider and controls."""
         rect = self.panel_rect
         
+        # Increase panel height for live stats when in live mode
+        if self.live_mode:
+            self.panel_height = 240  # Extra space for live stats with margin
+        else:
+            self.panel_height = 190  # Base height with checkbox at bottom
+        self.panel_rect.height = self.panel_height
+        
         # Panel background
         pygame.draw.rect(screen, (245, 245, 250), rect)
         
@@ -301,25 +377,165 @@ class CollapsibleRainfallPanel:
         # Draw slider
         self.rainfall_slider.draw(screen)
         
-        # Draw value display
+        # Draw value display (below slider)
         value = self.rainfall_slider.get_value()
         value_text = f"{value:.0f}mm"
         value_surf = self.font_large.render(value_text, True, (40, 80, 140))
         value_x = rect.centerx - value_surf.get_width() // 2
-        screen.blit(value_surf, (value_x, rect.y + 75))
+        screen.blit(value_surf, (value_x, rect.y + 100))
         
         # Draw warning indicator bar below value
         warning_color = self._get_warning_color(value)
-        bar_rect = pygame.Rect(rect.x + 20, rect.y + 105, rect.width - 40, 8)
+        bar_rect = pygame.Rect(rect.x + 20, rect.y + 130, rect.width - 40, 8)
         pygame.draw.rect(screen, (200, 200, 210), bar_rect)
         
         # Fill bar based on value (0-150mm mapped to bar width)
         fill_width = int((value / 150.0) * (rect.width - 40))
         if fill_width > 0:
-            fill_rect = pygame.Rect(rect.x + 20, rect.y + 105, fill_width, 8)
+            fill_rect = pygame.Rect(rect.x + 20, rect.y + 130, fill_width, 8)
             pygame.draw.rect(screen, warning_color, fill_rect)
         
         pygame.draw.rect(screen, (150, 150, 160), bar_rect, 1)
+        
+        # Draw live data checkbox below warning bar
+        self._draw_live_checkbox(screen)
+        
+        # Draw live data stats below checkbox (if in live mode)
+        if self.live_mode:
+            self._draw_live_stats(screen)
+    
+    def _draw_live_checkbox(self, screen: pygame.Surface) -> None:
+        """Draw the live data checkbox with label."""
+        # Calculate checkbox position below warning bar
+        rect = self.panel_rect
+        cb_x = rect.x + 15
+        cb_y = rect.y + 145  # Just below warning bar
+        
+        # Update the stored rect for hit testing
+        self.checkbox_rect.x = cb_x
+        self.checkbox_rect.y = cb_y
+        
+        # Draw checkbox background (white with border)
+        if self.checkbox_hovered:
+            border_color = (80, 130, 200)
+            bg_color = (230, 240, 255)
+        else:
+            border_color = (100, 100, 110)
+            bg_color = (255, 255, 255)
+        
+        pygame.draw.rect(screen, bg_color, self.checkbox_rect)
+        pygame.draw.rect(screen, border_color, self.checkbox_rect, 2)
+        
+        # Draw red square if checked
+        if self.checkbox_checked:
+            # Draw filled red square inside checkbox
+            red_square_padding = 3
+            red_square_rect = pygame.Rect(
+                cb_x + red_square_padding,
+                cb_y + red_square_padding,
+                self.checkbox_rect.width - red_square_padding * 2,
+                self.checkbox_rect.height - red_square_padding * 2
+            )
+            pygame.draw.rect(screen, (200, 50, 50), red_square_rect)
+        
+        # Draw label next to checkbox
+        label_text = "Use Live Data"
+        label_surf = self.font_small.render(label_text, True, (50, 50, 60))
+        screen.blit(label_surf, (cb_x + 20, cb_y + 1))
+    
+    def _draw_live_stats(self, screen: pygame.Surface) -> None:
+        """Draw live rainfall statistics in the panel."""
+        rect = self.panel_rect
+        stats_y = rect.y + 165  # Below checkbox
+        
+        # Draw live indicator with pulsing effect
+        pulse_color = (80, 180, 80)
+        pygame.draw.rect(screen, pulse_color, (rect.x + 15, stats_y, 8, 8))
+        
+        # "LIVE" label
+        live_label = self.font_small.render("LIVE", True, (60, 140, 60))
+        screen.blit(live_label, (rect.x + 28, stats_y))
+        
+        # Current rainfall value
+        value_text = f"{self.live_rainfall_value:.1f}mm"
+        value_surf = self.font.render(value_text, True, (40, 80, 140))
+        screen.blit(value_surf, (rect.x + 70, stats_y - 2))
+        
+        # Station info (if available) - truncate if too long
+        stats_y += 18
+        if self.live_station_info:
+            # Truncate station info to fit panel width
+            max_width = self.panel_width - 30
+            station_text = self.live_station_info
+            station_surf = self.font_small.render(station_text, True, (100, 100, 110))
+            # Truncate if too wide
+            while station_surf.get_width() > max_width and len(station_text) > 3:
+                station_text = station_text[:-4] + "..."
+                station_surf = self.font_small.render(station_text, True, (100, 100, 110))
+            screen.blit(station_surf, (rect.x + 15, stats_y))
+        
+        # Last updated time
+        stats_y += 16
+        if self.live_last_updated:
+            updated_text = f"Updated: {self.live_last_updated}"
+            updated_surf = self.font_small.render(updated_text, True, (120, 120, 130))
+            screen.blit(updated_surf, (rect.x + 15, stats_y))
+        
+        # Error message (if any)
+        if self.live_api_error:
+            error_y = rect.y + rect.height - 18
+            error_text = f"Error: {self.live_api_error}"
+            error_surf = self.font_small.render(error_text, True, (180, 60, 60))
+            screen.blit(error_surf, (rect.x + 15, error_y))
+        
+    def set_live_mode(self, enabled: bool) -> None:
+        """Set whether the panel is in live data mode.
+        
+        Args:
+            enabled: True for live data mode, False for manual slider
+        """
+        self.live_mode = enabled
+        self.checkbox_checked = enabled
+        self.rainfall_slider.set_disabled(enabled)
+        
+    def set_rainfall(self, value: float) -> None:
+        """Set the rainfall value (for live data updates).
+        
+        Args:
+            value: Rainfall value in mm
+        """
+        self.rainfall_slider.set_value(value)
+        
+    def set_live_stats(self, rainfall: float, station_info: str = "",
+                       last_updated: str = "", error: Optional[str] = None) -> None:
+        """Update live rainfall statistics display.
+        
+        Args:
+            rainfall: Current live rainfall value in mm
+            station_info: Information about data source/stations
+            last_updated: Timestamp of last data update
+            error: Error message if API fetch failed
+        """
+        self.live_rainfall_value = rainfall
+        self.live_station_info = station_info
+        self.live_last_updated = last_updated
+        self.live_api_error = error
+        
+    def set_live_checkbox_callback(self, callback: Callable[[bool], None]) -> None:
+        """Set callback function for when checkbox is toggled.
+        
+        Args:
+            callback: Function called with True when live mode enabled, False when disabled
+        """
+        self.live_checkbox_callback = callback
+        
+    def is_live_mode(self) -> bool:
+        """Check if panel is currently in live data mode.
+        
+        Returns:
+            True if live mode is enabled
+        """
+        return self.live_mode
         
     def _draw_close_button(self, screen: pygame.Surface) -> None:
         """Draw the close (X) button."""

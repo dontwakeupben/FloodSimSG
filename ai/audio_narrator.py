@@ -1,8 +1,6 @@
 """Voice/Audio Narration System for Flood Chatbot Alerts.
 
-Provides text-to-speech capabilities for proactive alerts with priority-based
-queue management. Supports multiple TTS backends (pyttsx3 for offline,
-ElevenLabs for high-quality cloud TTS).
+Provides text-to-speech capabilities for proactive alerts using ElevenLabs.
 """
 import threading
 import queue
@@ -16,10 +14,8 @@ import os
 
 class TTSBackend(Enum):
     """Available text-to-speech backends."""
-    AZURE = "azure"          # Azure AI Speech, high quality, uses existing Azure creds
-    PYTTSX3 = "pyttsx3"      # Offline, fast, lower quality
     ELEVENLABS = "elevenlabs"  # Cloud, high quality, requires API key
-    NONE = "none"            # No audio output
+    NONE = "none"              # No audio output
 
 
 @dataclass(order=True)
@@ -33,10 +29,9 @@ class AudioQueueItem:
 
 
 class AudioNarrator:
-    """Text-to-speech narrator for flood alerts.
+    """Text-to-speech narrator for flood alerts using ElevenLabs.
     
-    Manages a priority queue for audio playback and supports multiple TTS backends.
-    Automatically selects the best available backend.
+    Manages a priority queue for audio playback.
     
     Example:
         narrator = AudioNarrator()
@@ -59,29 +54,33 @@ class AudioNarrator:
     
     def __init__(
         self,
-        backend: Optional[TTSBackend] = None,
         elevenlabs_api_key: Optional[str] = None,
         voice_id: Optional[str] = None,
-        speech_rate: int = 150,  # Words per minute
         volume: float = 0.9
     ):
         """Initialize the audio narrator.
         
         Args:
-            backend: TTS backend to use (auto-selected if None)
-            elevenlabs_api_key: API key for ElevenLabs (optional)
+            elevenlabs_api_key: API key for ElevenLabs (optional, uses env var)
             voice_id: Voice ID for ElevenLabs (optional)
-            speech_rate: Speech rate in WPM (pyttsx3 only)
             volume: Volume level 0.0-1.0
         """
-        self.backend = backend or self._select_backend()
         self.elevenlabs_api_key = elevenlabs_api_key or os.getenv("ELEVENLABS_API_KEY")
         self.voice_id = voice_id or os.getenv("ELEVENLABS_VOICE_ID", "21m00Tcm4TlvDq8ikWAM")
-        self.speech_rate = speech_rate
         self.volume = max(0.0, min(1.0, volume))
         
-        # TTS engine
-        self._engine: Optional[Any] = None
+        # Check if ElevenLabs is available
+        self.backend = TTSBackend.NONE
+        if self.elevenlabs_api_key:
+            try:
+                from elevenlabs.client import ElevenLabs
+                self.backend = TTSBackend.ELEVENLABS
+            except ImportError:
+                print("AudioNarrator: ElevenLabs not installed, audio disabled")
+        else:
+            print("AudioNarrator: No ElevenLabs API key found, audio disabled")
+        
+        # TTS client
         self._elevenlabs_client: Optional[Any] = None
         
         # Audio queue and threading
@@ -108,166 +107,10 @@ class AudioNarrator:
         # Initialize backend
         self._initialize_backend()
     
-    def _select_backend(self) -> TTSBackend:
-        """Automatically select the best available backend."""
-        # ElevenLabs - best quality, free tier available
-        if os.getenv("ELEVENLABS_API_KEY"):
-            try:
-                from elevenlabs.client import ElevenLabs
-                print(f"AudioNarrator: Found ElevenLabs API key")
-                return TTSBackend.ELEVENLABS
-            except ImportError:
-                pass
-        
-        # Use pyttsx3 as fallback
-        try:
-            import pyttsx3
-            engine = pyttsx3.init()
-            print(f"AudioNarrator: Found pyttsx3 (SAPI5)")
-            return TTSBackend.PYTTSX3
-        except Exception as e:
-            print(f"AudioNarrator: pyttsx3 not available: {e}")
-            pass
-        
-        # Azure Speech requires separate Cognitive Services resource
-        if os.getenv("AZURE_SPEECH_KEY") and os.getenv("AZURE_SPEECH_REGION"):
-            try:
-                import azure.cognitiveservices.speech as speechsdk
-                print(f"AudioNarrator: Found Azure Speech SDK")
-                return TTSBackend.AZURE
-            except ImportError as e:
-                print(f"AudioNarrator: Azure Speech SDK import failed: {e}")
-                pass
-        
-        # Check for ElevenLabs API key
-        if os.getenv("ELEVENLABS_API_KEY"):
-            try:
-                import elevenlabs
-                return TTSBackend.ELEVENLABS
-            except ImportError:
-                pass
-        
-        return TTSBackend.NONE
-    
     def _initialize_backend(self) -> None:
-        """Initialize the selected TTS backend."""
-        if self.backend == TTSBackend.AZURE:
-            self._init_azure()
-        elif self.backend == TTSBackend.PYTTSX3:
-            self._init_pyttsx3()
-        elif self.backend == TTSBackend.ELEVENLABS:
+        """Initialize the ElevenLabs TTS backend."""
+        if self.backend == TTSBackend.ELEVENLABS:
             self._init_elevenlabs()
-    
-    def _init_azure(self) -> bool:
-        """Initialize Azure Cognitive Services Speech SDK.
-        
-        Uses the same Azure OpenAI credentials as the chatbot.
-        
-        Returns:
-            True if successful
-        """
-        try:
-            import azure.cognitiveservices.speech as speechsdk
-            
-            # Use Azure OpenAI endpoint region for Speech Service
-            endpoint = os.getenv("AZURE_OPENAI_ENDPOINT", "")
-            api_key = os.getenv("AZURE_OPENAI_API_KEY", "")
-            
-            if not endpoint or not api_key:
-                print("AudioNarrator: Azure credentials not found")
-                self.backend = TTSBackend.PYTTSX3
-                return self._init_pyttsx3()
-            
-            # Parse region from endpoint
-            # Common Azure regions for OpenAI: eastus, westus, southeastasia, etc.
-            region = "eastus"  # Default fallback
-            endpoint_lower = endpoint.lower()
-            
-            if ".openai.azure.com" in endpoint_lower:
-                # Try to extract region from known patterns
-                known_regions = [
-                    "eastus", "eastus2", "westus", "westus2", "westus3",
-                    "southeastasia", "eastasia", "japaneast", "japanwest",
-                    "northeurope", "westeurope", "uksouth", "ukwest",
-                    "australiaeast", "brazilsouth", "canadaeast", "centralus",
-                    "francecentral", "germanywestcentral", "koreacentral",
-                    "northcentralus", "norwayeast", "southafricanorth",
-                    "southcentralus", "swedencentral", "switzerlandnorth",
-                    "uaenorth", "westcentralus"
-                ]
-                
-                # Check if any known region is in the endpoint
-                for r in known_regions:
-                    if r in endpoint_lower:
-                        region = r
-                        break
-                else:
-                    # Try regex extraction: https://<name>-<region>.openai.azure.com
-                    import re
-                    match = re.search(r'https://[^-]+-([^.]+)\.openai\.azure\.com', endpoint_lower)
-                    if match:
-                        extracted = match.group(1)
-                        # Validate extracted region
-                        if extracted in known_regions:
-                            region = extracted
-                        else:
-                            print(f"AudioNarrator: Unknown region '{extracted}', using default")
-            
-            print(f"AudioNarrator: Initializing Azure Speech with region: {region}")
-            
-            # Create speech config
-            speech_config = speechsdk.SpeechConfig(
-                subscription=api_key,
-                region=region
-            )
-            
-            # Set voice - using en-SG voice for Singapore context
-            speech_config.speech_synthesis_voice_name = "en-SG-LunaNeural"
-            
-            # Create synthesizer with default speaker output
-            self._azure_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
-            
-            print(f"AudioNarrator: Initialized Azure Speech (region: {region}, voice: en-SG-LunaNeural)")
-            return True
-            
-        except ImportError as e:
-            print(f"AudioNarrator: azure-cognitiveservices-speech not installed: {e}")
-            self.backend = TTSBackend.PYTTSX3
-            return self._init_pyttsx3()
-        except Exception as e:
-            print(f"AudioNarrator: Failed to initialize Azure Speech: {e}")
-            import traceback
-            traceback.print_exc()
-            self.backend = TTSBackend.PYTTSX3
-            return self._init_pyttsx3()
-    
-    def _init_pyttsx3(self) -> bool:
-        """Initialize pyttsx3 engine.
-        
-        Returns:
-            True if successful
-        """
-        try:
-            import pyttsx3
-            self._engine = pyttsx3.init()
-            self._engine.setProperty('rate', self.speech_rate)
-            self._engine.setProperty('volume', self.volume)
-            
-            # Try to select a good voice
-            voices = self._engine.getProperty('voices')
-            # Prefer female voices (often clearer for alerts)
-            for voice in voices:
-                if 'female' in voice.name.lower() or 'zira' in voice.name.lower():
-                    self._engine.setProperty('voice', voice.id)
-                    break
-            
-            print(f"AudioNarrator: Initialized pyttsx3 (voice: {self._engine.getProperty('voice')})")
-            return True
-            
-        except Exception as e:
-            print(f"AudioNarrator: Failed to initialize pyttsx3: {e}")
-            self.backend = TTSBackend.NONE
-            return False
     
     def _init_elevenlabs(self) -> bool:
         """Initialize ElevenLabs client.
@@ -276,9 +119,9 @@ class AudioNarrator:
             True if successful
         """
         if not self.elevenlabs_api_key:
-            print("AudioNarrator: No ElevenLabs API key, falling back to pyttsx3")
-            self.backend = TTSBackend.PYTTSX3
-            return self._init_pyttsx3()
+            print("AudioNarrator: No ElevenLabs API key")
+            self.backend = TTSBackend.NONE
+            return False
         
         try:
             from elevenlabs.client import ElevenLabs
@@ -293,8 +136,8 @@ class AudioNarrator:
             
         except Exception as e:
             print(f"AudioNarrator: Failed to initialize ElevenLabs: {e}")
-            self.backend = TTSBackend.PYTTSX3
-            return self._init_pyttsx3()
+            self.backend = TTSBackend.NONE
+            return False
     
     def start(self) -> None:
         """Start the audio narration service."""
@@ -358,11 +201,7 @@ class AudioNarrator:
                 print(f"AudioNarrator: on_start callback error: {e}")
         
         try:
-            if self.backend == TTSBackend.AZURE:
-                self._play_azure(item.text)
-            elif self.backend == TTSBackend.PYTTSX3:
-                self._play_pyttsx3(item.text)
-            elif self.backend == TTSBackend.ELEVENLABS:
+            if self.backend == TTSBackend.ELEVENLABS:
                 self._play_elevenlabs(item.text)
             
             with self._stats_lock:
@@ -379,62 +218,6 @@ class AudioNarrator:
             except Exception as e:
                 print(f"AudioNarrator: on_end callback error: {e}")
     
-    def _play_pyttsx3(self, text: str) -> None:
-        """Play text using pyttsx3.
-        
-        Args:
-            text: Text to speak
-        """
-        if not self._engine:
-            return
-        
-        # pyttsx3 requires running in main thread or using runAndWait
-        # For thread safety, we create a temporary engine per utterance
-        import pyttsx3
-        engine = pyttsx3.init()
-        engine.setProperty('rate', self.speech_rate)
-        engine.setProperty('volume', self.volume)
-        
-        # Copy voice setting from main engine
-        if self._engine:
-            engine.setProperty('voice', self._engine.getProperty('voice'))
-        
-        engine.say(text)
-        engine.runAndWait()
-        engine.stop()
-    
-    def _play_azure(self, text: str) -> None:
-        """Play text using Azure Cognitive Services Speech.
-        
-        Args:
-            text: Text to speak
-        """
-        if not hasattr(self, '_azure_synthesizer') or not self._azure_synthesizer:
-            return
-        
-        try:
-            import azure.cognitiveservices.speech as speechsdk
-            
-            # Synthesize speech
-            result = self._azure_synthesizer.speak_text_async(text).get()
-            
-            # Check result
-            if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-                # Audio played successfully
-                pass
-            elif result.reason == speechsdk.ResultReason.Canceled:
-                cancellation_details = result.cancellation_details
-                print(f"AudioNarrator: Azure TTS canceled: {cancellation_details.reason}")
-                if cancellation_details.reason == speechsdk.CancellationReason.Error:
-                    print(f"AudioNarrator: Azure TTS error: {cancellation_details.error_details}")
-                    # Fall back to pyttsx3
-                    self._play_pyttsx3(text)
-                    
-        except Exception as e:
-            print(f"AudioNarrator: Azure TTS error: {e}")
-            # Fall back to pyttsx3
-            self._play_pyttsx3(text)
-    
     def _play_elevenlabs(self, text: str) -> None:
         """Play text using ElevenLabs.
         
@@ -447,30 +230,34 @@ class AudioNarrator:
         try:
             import io
             import pygame
+            from elevenlabs import VoiceSettings
             
-            # Use the new text_to_speech.convert API
+            # Use the text_to_speech.convert API with slower speed
             audio_iterator = self._elevenlabs_client.text_to_speech.convert(
                 text=text,
                 voice_id=self.voice_id,
                 model_id="eleven_flash_v2_5",  # Fast model for real-time
-                output_format="mp3_44100_128"
+                output_format="mp3_44100_128",
+                voice_settings=VoiceSettings(
+                    speed=0.85,  # Slower speech (0.5-2.0, 1.0 is normal)
+                    stability=0.5,
+                    similarity_boost=0.5
+                )
             )
             
             # Collect all audio chunks into bytes
             audio_bytes = b"".join(chunk for chunk in audio_iterator)
             
-            # Play using pygame (no ffmpeg needed!)
+            # Play using pygame
             sound = pygame.mixer.Sound(io.BytesIO(audio_bytes))
+            sound.set_volume(self.volume)
             sound.play()
             
             # Wait for audio to finish (blocking for alerts)
-            import time
             time.sleep(sound.get_length())
             
         except Exception as e:
             print(f"AudioNarrator: ElevenLabs error: {e}")
-            # Fall back to pyttsx3
-            self._play_pyttsx3(text)
     
     def speak(
         self,
@@ -594,7 +381,7 @@ class NullAudioNarrator(AudioNarrator):
     
     def __init__(self):
         """Initialize null narrator."""
-        super().__init__(backend=TTSBackend.NONE)
+        super().__init__()
     
     def start(self) -> None:
         """No-op."""
