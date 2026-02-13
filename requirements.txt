@@ -17,3 +17,8 @@ chromadb>=0.4.0
 
 # Environment variables
 python-dotenv>=1.0.0
+
+# Optional: Audio narration (choose one or more)
+# azure-cognitiveservices-speech>=1.30.0  # Azure TTS (uses same credentials)
+# pyttsx3>=2.90  # Offline text-to-speech
+# elevenlabs>=1.0.0  # High-quality cloud TTS (requires API key)

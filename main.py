@@ -24,7 +24,11 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 from levels import BaseLevel, IonLevel, OrchardLevel, CarparkLevel
 from core import RainEffect, WaterRiseEffect
-from ai import AIAdvisor, FloodChatbot, ChatbotPanel, ChatButton
+from ai import (
+    AIAdvisor, FloodChatbot, ChatbotPanel, ChatButton,
+    ProactiveAlertManager, AudioNarrator
+)
+from ai.flood_alerts import FloodAlertManager
 from ui import UIPanel, FadeTransition, CollapsibleRainfallPanel, BackButton, InfoPopup, MapMenu
 
 # Game constants
@@ -92,12 +96,30 @@ class Game:
         self.map_menu = MapMenu(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.map_menu.set_callback(self._on_zone_selected)
         
-        # Initialize chatbot panel
-        self.chatbot_panel = ChatbotPanel(self.ai_chatbot)
+        # Initialize audio narrator FIRST (needed by other components)
+        self.audio_narrator = AudioNarrator()
+        self.audio_narrator.start()
+        
+        # Initialize chatbot panel with TTS support
+        self.chatbot_panel = ChatbotPanel(self.ai_chatbot, audio_narrator=self.audio_narrator)
         
         # Initialize chat button (bottom right, above UI panel)
         self.chat_button = ChatButton(SCREEN_WIDTH - 68, SCREEN_HEIGHT - 168, size=48)
         self.chat_button.set_callback(lambda: self.chatbot_panel.toggle())
+        
+        # Initialize proactive alert manager
+        self.alert_manager = ProactiveAlertManager(
+            chatbot=self.ai_chatbot,
+            cooldown_seconds=60,
+            min_alert_interval=30,
+            use_ai_alerts=True  # Use fallback messages for stability
+        )
+        
+        # Initialize simple flood alert manager
+        self.flood_alerts = FloodAlertManager(self.audio_narrator)
+        
+        # Connect alerts to audio (legacy)
+        self.alert_manager.add_alert_callback(self._on_proactive_alert)
         
         # Load all levels
         self.levels = {}
@@ -154,6 +176,21 @@ class Game:
             
         self.fade.start_fade_out(do_return)
         
+    def _on_proactive_alert(self, alert) -> None:
+        """Handle proactive alerts from the alert manager.
+        
+        Args:
+            alert: ProactiveAlert that was triggered
+        """
+        # Speak the alert
+        self.audio_narrator.speak_alert(alert)
+        
+        # Flash chat button for high priority alerts
+        if alert.priority.value in ["high", "critical"]:
+            self.chat_button.set_notification(True)
+        
+        print(f"[ALERT] {alert.priority.value.upper()}: {alert.message}")
+        
     def _switch_level(self, target_name: str, spawn_x: int, spawn_y: int) -> None:
         """Switch to a different level with fade transition.
         
@@ -190,6 +227,14 @@ class Game:
                         self.running = False
                 elif event.key == pygame.K_F1:
                     self.debug_mode = not self.debug_mode
+                elif event.key == pygame.K_t:
+                    # Test audio narrator
+                    print("Testing audio narrator...")
+                    self.audio_narrator.speak(
+                        "This is a test of the flood simulation audio system.",
+                        priority=1,
+                        alert_id="test"
+                    )
             
             # Handle chatbot panel events (highest priority when visible)
             # Handle chatbot panel events only in level mode
@@ -261,6 +306,14 @@ class Game:
                     rainfall=self.rainfall,
                     location=self.current_level.name
                 )
+            
+            # Simple hardcoded flood alerts (stable)
+            alert_msg = self.flood_alerts.update(
+                rainfall=self.rainfall,
+                location=self.current_level.name
+            )
+            if alert_msg:
+                print(f"[FLOOD ALERT] {alert_msg}")
             
             # Update rain effect (disabled for carpark when flooding)
             if self.current_level_name == "carpark":
@@ -367,6 +420,17 @@ class Game:
             cursor_text = f"Cursor: ({mouse_x}, {mouse_y})"
             cursor_surf = font.render(cursor_text, True, (255, 255, 0))
             self.screen.blit(cursor_surf, (10, 60))
+            
+            # Draw audio/alert status
+            audio_info = self.audio_narrator.get_backend_info()
+            audio_text = f"Audio: {audio_info['backend']} | Queue: {audio_info['queue_size']}"
+            audio_surf = font.render(audio_text, True, (255, 255, 0))
+            self.screen.blit(audio_surf, (10, 85))
+            
+            alert_stats = self.alert_manager.get_stats()
+            alert_text = f"Alerts: {alert_stats['pending_alerts']} pending, {alert_stats['total_alerts']} total"
+            alert_surf = font.render(alert_text, True, (255, 255, 0))
+            self.screen.blit(alert_surf, (10, 110))
         
         pygame.display.flip()
         
@@ -416,7 +480,9 @@ class Game:
             self.handle_events()
             self.update(dt)
             self.draw()
-            
+        
+        # Cleanup
+        self.audio_narrator.stop()
         pygame.quit()
         sys.exit()
 
@@ -431,6 +497,7 @@ def main():
     print("  Mouse: Adjust rainfall slider (top-left)")
     print("  Mouse: Click chat button (bottom-right) or press C")
     print("  Debug Mode: F1 (shows FPS, cursor position)")
+    print("  Test Audio: T")
     print("  Quit: ESC")
     print("\nZones:")
     print("  ION Orchard - High ground (80mm threshold)")

@@ -243,19 +243,23 @@ class ChatbotPanel:
         'scroll_thumb': (160, 160, 170),
     }
     
-    def __init__(self, chatbot: FloodChatbot, 
-                 x: int = 380, y: int = 50, 
-                 width: int = 400, height: int = 500):
+    def __init__(self, chatbot: FloodChatbot,
+                 x: int = 380, y: int = 50,
+                 width: int = 400, height: int = 500,
+                 audio_narrator=None):
         """Initialize chatbot panel.
         
         Args:
             chatbot: The flood chatbot instance
             x, y: Position of panel
             width, height: Panel dimensions
+            audio_narrator: Optional AudioNarrator for TTS
         """
         self.chatbot = chatbot
+        self.audio_narrator = audio_narrator
         self.rect = pygame.Rect(x, y, width, height)
         self.visible = False
+        self._greeting_played = False
         
         # Header
         self.header_height = 36
@@ -318,6 +322,8 @@ class ChatbotPanel:
             # Mark messages as read when opening
             self.chatbot.mark_messages_read()
             self.input_active = True
+            self._play_greeting()
+            self._add_welcome_message()
         else:
             self.input_active = False
             
@@ -326,11 +332,39 @@ class ChatbotPanel:
         self.visible = True
         self.chatbot.mark_messages_read()
         self.input_active = True
+        self._play_greeting()
+        self._add_welcome_message()
         
     def hide(self) -> None:
         """Hide the chat panel."""
         self.visible = False
         self.input_active = False
+        
+    def _play_greeting(self) -> None:
+        """Play voice greeting when opening chat."""
+        if self.audio_narrator and not self._greeting_played:
+            greeting = "Hello. I'm your flood safety advisor. Ask me anything about flood safety."
+            self.audio_narrator.speak(greeting, priority=2, alert_id="chatbot_greeting")
+            self._greeting_played = True
+    
+    def _add_welcome_message(self) -> None:
+        """Add welcome message to chat history."""
+        from .ai_chatbot import ChatMessage
+        from datetime import datetime
+        
+        # Check if welcome message already exists
+        existing_messages = self.chatbot.get_messages(limit=10)
+        for msg in existing_messages:
+            if msg.role == "assistant" and "Welcome" in msg.content:
+                return  # Already welcomed
+        
+        # Add welcome message
+        welcome = ChatMessage(
+            role="assistant",
+            content="Welcome! I'm your flood safety advisor. I can answer questions about Singapore flood safety, PUB guidelines, and historical flood incidents. What would you like to know?",
+            timestamp=datetime.now()
+        )
+        self.chatbot.messages.append(welcome)
         
     def has_unread(self) -> bool:
         """Check if there are unread messages."""
@@ -635,4 +669,224 @@ class ChatbotPanel:
         if current_line:
             lines.append(' '.join(current_line))
             
+        return lines if lines else [""]
+
+
+class AlertHistoryView:
+    """Overlay view for alert history in the chatbot panel."""
+    
+    COLORS = {
+        'bg': (40, 40, 50, 230),  # Semi-transparent dark
+        'header': (80, 130, 200),
+        'text': (255, 255, 255),
+        'timestamp': (180, 180, 180),
+        'critical': (255, 100, 100),
+        'high': (255, 150, 100),
+        'medium': (255, 200, 100),
+        'low': (100, 200, 100),
+        'border': (100, 100, 110),
+    }
+    
+    def __init__(self, alert_manager, x: int = 50, y: int = 50, width: int = 700, height: int = 500):
+        """Initialize alert history view.
+        
+        Args:
+            alert_manager: ProactiveAlertManager instance
+            x, y: Position
+            width, height: Dimensions
+        """
+        self.alert_manager = alert_manager
+        self.rect = pygame.Rect(x, y, width, height)
+        self.visible = False
+        self.scroll_offset = 0
+        
+        self.font = pygame.font.Font(None, 24)
+        self.font_small = pygame.font.Font(None, 20)
+        self.font_title = pygame.font.Font(None, 32)
+        
+        # Close button
+        self.close_btn_rect = pygame.Rect(x + width - 40, y + 10, 30, 30)
+    
+    def toggle(self) -> None:
+        """Toggle visibility."""
+        self.visible = not self.visible
+        if self.visible:
+            self.scroll_offset = 0
+    
+    def show(self) -> None:
+        """Show the view."""
+        self.visible = True
+        self.scroll_offset = 0
+    
+    def hide(self) -> None:
+        """Hide the view."""
+        self.visible = False
+    
+    def handle_event(self, event) -> bool:
+        """Handle events.
+        
+        Returns:
+            True if event was handled
+        """
+        if not self.visible:
+            return False
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if self.close_btn_rect.collidepoint(event.pos):
+                    self.hide()
+                    return True
+                
+                # Scroll handling
+                if self.rect.collidepoint(event.pos):
+                    if event.button == 4:  # Scroll up
+                        self.scroll_offset = max(0, self.scroll_offset - 30)
+                        return True
+                    elif event.button == 5:  # Scroll down
+                        self.scroll_offset += 30
+                        return True
+        
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.hide()
+                return True
+        
+        return False
+    
+    def draw(self, screen: pygame.Surface) -> None:
+        """Draw the alert history view."""
+        if not self.visible:
+            return
+        
+        # Semi-transparent background overlay
+        overlay = pygame.Surface((screen.get_width(), screen.get_height()))
+        overlay.fill((0, 0, 0))
+        overlay.set_alpha(180)
+        screen.blit(overlay, (0, 0))
+        
+        # Main panel background
+        pygame.draw.rect(screen, (45, 45, 55), self.rect)
+        pygame.draw.rect(screen, self.COLORS['border'], self.rect, 2)
+        
+        # Header
+        header_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.width, 50)
+        pygame.draw.rect(screen, self.COLORS['header'], header_rect)
+        
+        title = self.font_title.render("Alert History", True, self.COLORS['text'])
+        screen.blit(title, (self.rect.x + 20, self.rect.y + 12))
+        
+        # Close button
+        pygame.draw.rect(screen, (200, 80, 80), self.close_btn_rect)
+        close_x = self.font.render("X", True, self.COLORS['text'])
+        screen.blit(close_x, (self.close_btn_rect.centerx - 6, self.close_btn_rect.centery - 8))
+        
+        # Get alert history
+        alerts = self.alert_manager.get_alert_history(limit=20)
+        
+        if not alerts:
+            no_alerts = self.font.render("No alerts yet. Alerts will appear here when triggered.",
+                                        True, self.COLORS['timestamp'])
+            screen.blit(no_alerts, (self.rect.x + 20, self.rect.y + 80))
+            return
+        
+        # Draw alerts
+        y_offset = self.rect.y + 60 - self.scroll_offset
+        content_height = 0
+        
+        for alert in reversed(alerts):  # Newest first
+            # Alert item height
+            item_height = 80
+            
+            # Skip if off-screen
+            if y_offset + item_height < self.rect.y + 50 or y_offset > self.rect.bottom:
+                y_offset += item_height + 10
+                content_height += item_height + 10
+                continue
+            
+            # Alert background
+            alert_rect = pygame.Rect(self.rect.x + 10, y_offset, self.rect.width - 20, item_height)
+            
+            # Color based on priority
+            if alert.priority.value == "critical":
+                bg_color = self.COLORS['critical']
+            elif alert.priority.value == "high":
+                bg_color = self.COLORS['high']
+            elif alert.priority.value == "medium":
+                bg_color = self.COLORS['medium']
+            else:
+                bg_color = self.COLORS['low']
+            
+            # Darker background with colored border
+            pygame.draw.rect(screen, (55, 55, 65), alert_rect)
+            pygame.draw.rect(screen, bg_color, alert_rect, 2)
+            
+            # Priority badge
+            priority_text = alert.priority.value.upper()
+            priority_surf = self.font_small.render(priority_text, True, bg_color)
+            screen.blit(priority_surf, (alert_rect.x + 10, alert_rect.y + 8))
+            
+            # Timestamp
+            time_str = alert.created_at.strftime("%H:%M:%S")
+            time_surf = self.font_small.render(time_str, True, self.COLORS['timestamp'])
+            screen.blit(time_surf, (alert_rect.right - 80, alert_rect.y + 8))
+            
+            # Location and rainfall
+            loc_text = f"{alert.location} | {alert.rainfall:.0f}mm"
+            loc_surf = self.font_small.render(loc_text, True, self.COLORS['timestamp'])
+            screen.blit(loc_surf, (alert_rect.x + 10, alert_rect.y + 28))
+            
+            # Message (wrapped)
+            msg_lines = self._wrap_text(alert.message, alert_rect.width - 20)
+            msg_y = alert_rect.y + 48
+            for line in msg_lines[:2]:  # Max 2 lines
+                msg_surf = self.font.render(line, True, self.COLORS['text'])
+                screen.blit(msg_surf, (alert_rect.x + 10, msg_y))
+                msg_y += 18
+            
+            y_offset += item_height + 10
+            content_height += item_height + 10
+        
+        # Draw scrollbar if needed
+        view_height = self.rect.height - 60
+        if content_height > view_height:
+            self._draw_scrollbar(screen, content_height)
+    
+    def _draw_scrollbar(self, screen: pygame.Surface, content_height: int) -> None:
+        """Draw scrollbar."""
+        scrollbar_x = self.rect.right - 15
+        scrollbar_rect = pygame.Rect(scrollbar_x, self.rect.y + 60, 10, self.rect.height - 70)
+        
+        # Background
+        pygame.draw.rect(screen, (60, 60, 70), scrollbar_rect)
+        
+        # Thumb
+        view_height = self.rect.height - 70
+        thumb_height = max(30, view_height * view_height // content_height)
+        max_scroll = content_height - view_height
+        if max_scroll > 0:
+            thumb_y = scrollbar_rect.y + (self.scroll_offset * view_height // max_scroll)
+        else:
+            thumb_y = scrollbar_rect.y
+        
+        thumb_rect = pygame.Rect(scrollbar_x, thumb_y, 10, thumb_height)
+        pygame.draw.rect(screen, (120, 120, 130), thumb_rect)
+    
+    def _wrap_text(self, text: str, max_width: int) -> List[str]:
+        """Wrap text to fit width."""
+        words = text.split(' ')
+        lines = []
+        current_line = []
+        
+        for word in words:
+            test_line = ' '.join(current_line + [word])
+            test_surf = self.font.render(test_line, True, (255, 255, 255))
+            if test_surf.get_width() <= max_width:
+                current_line.append(word)
+            else:
+                if current_line:
+                    lines.append(' '.join(current_line))
+                current_line = [word]
+        if current_line:
+            lines.append(' '.join(current_line))
+        
         return lines if lines else [""]
