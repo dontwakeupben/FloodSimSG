@@ -69,9 +69,9 @@ class OrchardLevel(BaseLevel):
                 y=476,          # Top position of bus
                 width=70,      # Bus width
                 height=80,     # Bus height
-                title="Public Bus",
-                description="A double-decker bus caught in the flash flood. "
-                           "Vehicles can stall in as little as 300mm of standing water. "
+                title="Car",
+                description="A car can be unsafe during floods or extreme rainfall due to slippery roads or high water levels. "
+                           "Vehicles can stall in as little as 300mm of standing water."
                            "Never attempt to drive through flooded roads."
             ),
             
